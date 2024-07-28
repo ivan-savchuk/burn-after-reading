@@ -13,6 +13,12 @@ def display_form_page(request: Request) -> templates.TemplateResponse:
 
 
 @media_router.get("/generation-result", response_class=HTMLResponse)
-def display_result(request: Request):
-    # TODO: create a dedicated page and display content based on response
-    return HTMLResponse("Secret created")
+def display_result(request: Request, status: int, hash_link: str) -> templates.TemplateResponse:
+    return templates.TemplateResponse(
+        "created.html",
+        {
+            "request": request,
+            "status": status,
+            "hash_link": hash_link
+        }
+    )
