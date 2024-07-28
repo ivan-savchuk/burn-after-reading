@@ -1,6 +1,11 @@
 import sqlite3
 
+from app_logger.logger import Logger
+from entities.secret_record import SecretRecord
 from config.sqlite_config import SQLiteConfig
+
+
+logger = Logger("db-queries")
 
 
 def connect_wal_mode() -> sqlite3.Connection:
@@ -19,3 +24,19 @@ def connect_wal_mode() -> sqlite3.Connection:
     conn.execute(f"PRAGMA temp_store={db_config.get("TEMP_STORE")}")
 
     return conn
+
+
+def insert_secret(secret_record: SecretRecord) -> int | None:
+    query = """
+            INSERT INTO secrets_to_share (user_email, secret, hash_link, passphrase_applied,
+                                          expiration_datetime, is_burned, viewed)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+    """
+    try:
+        with connect_wal_mode() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, secret_record.to_tuple())
+            return cursor.lastrowid
+    except sqlite3.Error as exc:
+        logger.error(f"An error occurred: {exc}")
+        return None

@@ -38,38 +38,38 @@
             </div>
 
             <div class="col-md-6">
-                <form id="secretForm" action="/submit-secret" method="POST">
 
-                  <div class="form-group pt-2">
-                    <label for="secretField">Secret Text</label>
-                    <textarea class="form-control" id="secretField" name="secret" placeholder="Your secret goes here" required></textarea>
-                  </div>
+                {% if status == 1 %}
+                    <div class="alert alert-success" role="alert">
+                      <h4 class="alert-heading">Secreted created!</h4>
+                      <p>Now you are free to share this secret with the person you like.</p>
+                      <hr>
+                        <p class="mb-0">Link to share: <code>https://www.google.com/?client=safari&hash={{ hash_link }}</code>.</p>
+                    </div>
 
-                  <div class="form-group pt-2">
-                    <label for="passphraseField">Passphrase</label>
-                    <input type="text" class="form-control" id="passphraseField" name="passphrase">
-                  </div>
+                    <form id="secretForm" action="/" method="GET">
 
-                  <div class="form-group pt-2">
-                    <label for="expirationSelect">Expiration Time</label>
-                    <select class="form-control" id="expirationSelect" name="expiration-time">
-                      <option value="7d">7 days</option>
-                      <option value="5m">5 minutes</option>
-                      <option value="10m">10 minutes</option>
-                      <option value="30m">30 minutes</option>
-                      <option value="1h">1 hour</option>
-                      <option value="4h">4 hours</option>
-                      <option value="12h">12 hours</option>
-                      <option value="1d">1 day</option>
-                      <option value="3d">3 days</option>
-                    </select>
-                  </div>
+                      <div class="d-grid gap-2 col-12 pt-4 mx-auto">
+                          <button class="btn btn-lg btn-dark" type="submit" value="Submit">Go to main menu</button>
+                      </div>
 
-                  <div class="d-grid gap-2 col-12 pt-4 mx-auto">
-                      <button class="btn btn-lg btn-success" type="submit" value="Submit">Create Secret Link</button>
-                  </div>
+                    </form>
+                {% else %}
+                    <div class="alert alert-danger" role="alert">
+                      <h4 class="alert-heading">Something went wrong!!</h4>
+                      <p>Something crashed on server, we couldn't create a secret.</p>
+                      <hr>
+                        <p class="mb-0">Contact system administrator.</p>
+                    </div>
 
-                </form>
+                    <form id="secretForm" action="/" method="GET">
+
+                      <div class="d-grid gap-2 col-12 pt-4 mx-auto">
+                          <button class="btn btn-lg btn-danger" type="submit" value="Submit">Go to main menu</button>
+                      </div>
+
+                    </form>
+                {% endif %}
 
             </div>
 
