@@ -29,7 +29,7 @@ def connect_wal_mode() -> sqlite3.Connection:
 def insert_secret(secret_record: SecretRecord) -> int | None:
     query = """
             INSERT INTO secrets_to_share (user_email, secret, hash_link, passphrase_applied,
-                                          expiration_datetime, is_burned, viewed)
+                                          expiration_datetime, burned, viewed)
             VALUES (?, ?, ?, ?, ?, ?, ?)
     """
     try:
@@ -40,3 +40,43 @@ def insert_secret(secret_record: SecretRecord) -> int | None:
     except sqlite3.Error as exc:
         logger.error(f"An error occurred: {exc}")
         return None
+
+
+def get_secret_by_link(hash_link: str) -> SecretRecord | None:
+    query = """
+        SELECT *
+        FROM secrets_to_share
+        WHERE hash_link = ?
+    """
+    try:
+        with connect_wal_mode() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, (hash_link,))
+            result = cursor.fetchone()
+            print(result)
+            return SecretRecord(
+                user_email=result[1],
+                secret=result[2],
+                hash_link=result[3],
+                passphrase_applied=result[4],
+                expiration_datetime=result[5],
+                burned=result[6],
+                viewed=result[7]
+            )
+    except sqlite3.Error as exc:
+        logger.error(f"An error occurred: {exc}")
+        return None
+
+
+def update_viewed_status(hash_link: str, viewed: int) -> None:
+    query = """
+        UPDATE secrets_to_share
+        SET viewed = ?
+        WHERE hash_link = ?
+    """
+    try:
+        with connect_wal_mode() as conn:
+            cursor = conn.cursor()
+            cursor.execute(query, (viewed, hash_link))
+    except sqlite3.Error as exc:
+        logger.error(f"An error occurred: {exc}")
