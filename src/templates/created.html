@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Secret Created{% endblock %}
+
+{% block content %}
+    <div class="container justify-content-center pt-3">
+        <div class="row center">
+
+            <div class="col-md-3">
+                <!-- just a placeholder for space-->
+            </div>
+
+            <div class="col-md-6">
+
+                {% if status == 1 %}
+                    <div class="alert alert-success" role="alert">
+                      <h4 class="alert-heading">Secreted created!</h4>
+                      <p>Now you are free to share this secret with the person you like.</p>
+                      <hr>
+                        <p class="mb-0">Link to share: <code>https://www.google.com/?client=safari&hash={{ hash_link }}</code>.</p>
+                    </div>
+
+                    <form id="secretForm" action="/" method="GET">
+
+                      <div class="d-grid gap-2 col-12 pt-4 mx-auto">
+                          <button class="btn btn-lg btn-dark" type="submit" value="Submit">Go to main menu</button>
+                      </div>
+
+                    </form>
+                {% else %}
+                    <div class="alert alert-danger" role="alert">
+                      <h4 class="alert-heading">Something went wrong!!</h4>
+                      <p>Something crashed on server, we couldn't create a secret.</p>
+                      <hr>
+                        <p class="mb-0">Contact system administrator.</p>
+                    </div>
+
+                    <form id="secretForm" action="/" method="GET">
+
+                      <div class="d-grid gap-2 col-12 pt-4 mx-auto">
+                          <button class="btn btn-lg btn-danger" type="submit" value="Submit">Go to main menu</button>
+                      </div>
+
+                    </form>
+                {% endif %}
+
+            </div>
+
+            <div class="col-md-3">
+                <!-- just a placeholder for space-->
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
