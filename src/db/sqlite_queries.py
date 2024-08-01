@@ -53,7 +53,6 @@ def get_secret_by_link(hash_link: str) -> SecretRecord | None:
             cursor = conn.cursor()
             cursor.execute(query, (hash_link,))
             result = cursor.fetchone()
-            print(result)
             return SecretRecord(
                 user_email=result[1],
                 secret=result[2],

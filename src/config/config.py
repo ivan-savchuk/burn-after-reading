@@ -1,3 +1,4 @@
+import os
 from abc import abstractmethod
 
 
@@ -21,3 +22,13 @@ class Config:
 
         if missing_data:
             raise ValueError("Missing variables to be set:" + "".join(missing_data))
+
+
+class AppConfig(Config):
+
+    def read_from_env(self) -> dict:
+        return {
+            "PORT": os.getenv("PORT"),
+            "HOST": os.getenv("HOST"),
+            "DEFAULT_PASSPHRASE": os.getenv("DEFAULT_PASSPHRASE")
+        }
