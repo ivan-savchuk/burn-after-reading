@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Create Secret{% endblock %}
+
+{% block content %}
+    <div class="container justify-content-center pt-3">
+        <div class="row center">
+
+            <div class="col-md-3">
+                <!-- just a placeholder for space-->
+            </div>
+
+            <div class="col-md-6">
+                <form id="secretForm" action="/display-secret" method="POST">
+                  <input type="hidden" id="hashLink" name="hash_link" value="{{ hash_link }}">
+
+                  <h4 class="mb-3">Request a secret</h4>
+                  <div class="form-group pt-2">
+                    <label for="passphraseField">Passphrase</label>
+                    <input type="text" class="form-control" id="passphraseField" name="passphrase">
+                  </div>
+
+                  <div class="d-grid gap-2 col-12 pt-4 mx-auto">
+                      <button class="btn btn-lg btn-success" type="submit" value="Submit">Reveal Secret</button>
+                  </div>
+
+                </form>
+
+            </div>
+
+            <div class="col-md-3">
+                <!-- just a placeholder for space-->
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

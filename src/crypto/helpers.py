@@ -1,4 +1,6 @@
+from time import time
 from hashlib import sha256
+from secrets import token_bytes
 from base64 import urlsafe_b64encode
 
 
@@ -7,7 +9,9 @@ def generate_key(passphrase: str) -> bytes:
     return urlsafe_b64encode(sha256(passphrase.encode()).digest())
 
 
-def get_hash32(text: str):
-    hash_object = sha256(text.encode())
-    hex_dig = hash_object.hexdigest()
-    return hex_dig[:32]
+def get_random_hash() -> str:
+    # Generate a random 32-byte hash
+    random_bytes = token_bytes(32)
+    # Use the current timestamp as a salt
+    timestamp = str(time()).encode()
+    return sha256(random_bytes + timestamp).hexdigest()
