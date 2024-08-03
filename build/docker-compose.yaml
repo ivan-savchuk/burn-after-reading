@@ -1,0 +1,10 @@
+
+services:
+  fastapi-app:
+    image: fastapi-app:latest
+    build:
+      context: ..
+      dockerfile: build/Dockerfile
+    volumes:
+      - ../src:/app/src
+      - ../data:/app/data
