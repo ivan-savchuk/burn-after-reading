@@ -1,9 +1,9 @@
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from fastapi import APIRouter, Request, HTTPException, Form
+from fastapi import APIRouter, Request, Form
 
-from crypto.fernet import decrypt
 from config.config import AppConfig
+from routers.helpers import decrypt_secret
 from routers.helpers import raise_if_viewed
 from db.sqlite_queries import get_secret_by_link, update_viewed_status
 
@@ -34,6 +34,7 @@ def display_result(request: Request, status: int, hash_link: str) -> templates.T
 def request_secret(request: Request, hash_link: str) -> templates.TemplateResponse:
     secret = get_secret_by_link(hash_link)
     raise_if_viewed(secret)
+
     return templates.TemplateResponse("request.html", {"request": request, "hash_link": hash_link})
 
 
@@ -43,9 +44,7 @@ def display_secret(request: Request,
     secret = get_secret_by_link(hash_link)
     raise_if_viewed(secret)
 
-    decrypted_secret = decrypt(secret.secret, passphrase if passphrase else cfg.get("DEFAULT_PASSPHRASE"))
-    if not decrypted_secret:
-        raise HTTPException(status_code=401, detail={"message": "Invalid passphrase provided"})
-
+    decrypted_secret = decrypt_secret(secret, passphrase)
     update_viewed_status(hash_link, 1)
+
     return templates.TemplateResponse("secret.html", {"request": request, "secret": decrypted_secret})
