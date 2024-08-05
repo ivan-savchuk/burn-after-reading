@@ -3,8 +3,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, Form
 
 from config.config import AppConfig
-from routers.helpers import decrypt_secret
-from routers.helpers import raise_if_viewed
+from routers.utils import decrypt_secret, Checker
 from db.sqlite_queries import get_secret_by_link, update_viewed_status
 
 
@@ -33,7 +32,8 @@ def display_result(request: Request, status: int, hash_link: str) -> templates.T
 @media_router.get("/request-secret", response_class=HTMLResponse)
 def request_secret(request: Request, hash_link: str) -> templates.TemplateResponse:
     secret = get_secret_by_link(hash_link)
-    raise_if_viewed(secret)
+
+    Checker.apply_checks(secret)
 
     return templates.TemplateResponse("request.html", {"request": request, "hash_link": hash_link})
 
@@ -42,7 +42,8 @@ def request_secret(request: Request, hash_link: str) -> templates.TemplateRespon
 def display_secret(request: Request,
                    hash_link: str = Form(...), passphrase: str | None = Form(None)) -> templates.TemplateResponse:
     secret = get_secret_by_link(hash_link)
-    raise_if_viewed(secret)
+
+    Checker.apply_checks(secret)
 
     decrypted_secret = decrypt_secret(secret, passphrase)
     update_viewed_status(hash_link, 1)
