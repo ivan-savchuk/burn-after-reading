@@ -7,7 +7,7 @@ from entities.secret_record import SecretRecord
 from entities.crud import SecretCreate, SecretDNSLink, SecretRequest, SecretData
 
 from config.config import AppConfig
-from routers.helpers import raise_if_viewed, decrypt_secret
+from routers.utils import Checker, decrypt_secret
 from db.sqlite_queries import insert_secret, get_secret_by_link, update_viewed_status
 
 
@@ -40,7 +40,8 @@ def create_secret(secret: SecretCreate):
 @crud_router.post("/secret/{hash_link}", response_model=SecretData)
 def read_secret(hash_link: str, secret_request: SecretRequest):
     secret = get_secret_by_link(hash_link)
-    raise_if_viewed(secret)
+
+    Checker.apply_checks(secret)
 
     decrypted_secret = decrypt_secret(secret, secret_request.passphrase)
     update_viewed_status(hash_link, 1)
@@ -51,7 +52,8 @@ def read_secret(hash_link: str, secret_request: SecretRequest):
 @crud_router.post("/secret/burn/{hash_link}", status_code=status.HTTP_204_NO_CONTENT)
 def burn_secret(hash_link: str, secret_request: SecretRequest | None = None):
     secret = get_secret_by_link(hash_link)
-    raise_if_viewed(secret)
+
+    Checker.apply_checks(secret)
 
     _ = decrypt_secret(secret, secret_request.passphrase)
     update_viewed_status(hash_link, 1)
