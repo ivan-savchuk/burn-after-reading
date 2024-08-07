@@ -3,8 +3,9 @@ from fastapi.templating import Jinja2Templates
 from fastapi import APIRouter, Request, Form
 
 from config.config import AppConfig
-from routers.utils import decrypt_secret, Checker
-from db.sqlite_queries import get_secret_by_link, update_viewed_status
+from routers.utils.checker import Checker
+from routers.utils.security import decrypt_secret
+from db.crud_queries import get_secret_by_link, update_viewed_status
 
 
 media_router = APIRouter()
