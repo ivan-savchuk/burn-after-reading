@@ -7,7 +7,7 @@ from crypto.fernet import encrypt
 from crypto.helpers import get_random_hash
 
 from config.config import AppConfig
-from db.sqlite_queries import insert_secret
+from db.crud_queries import insert_secret
 from entities.secret_record import SecretRecord
 
 
