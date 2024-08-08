@@ -1,6 +1,6 @@
 import sqlite3
 
-from config.sqlite_config import SQLiteConfig
+from core.config.sqlite_config import SQLiteConfig
 
 
 def connect_wal_mode() -> sqlite3.Connection:

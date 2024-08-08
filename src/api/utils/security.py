@@ -1,9 +1,9 @@
 from fastapi import HTTPException, status, Security
 from fastapi.security.api_key import APIKeyHeader
 
-from crypto.fernet import decrypt
-from config.config import AppConfig
-from db.user import check_for_api_key
+from core.cryptography import decrypt
+from core.config.config import AppConfig
+from database.user import check_for_api_key
 
 from entities.secret_record import SecretRecord
 
