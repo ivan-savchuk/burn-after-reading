@@ -1,15 +1,15 @@
 from fastapi import APIRouter, status, HTTPException, Depends
 
-from crypto.helpers import get_random_hash
-from crypto.fernet import encrypt
+from core.cryptography import get_random_hash
+from core.cryptography import encrypt
 
 from entities.secret_record import SecretRecord
 from entities.crud import SecretCreate, SecretDNSLink, SecretRequest, SecretData
 
-from config.config import AppConfig
-from routers.utils.checker import Checker
-from routers.utils.security import decrypt_secret, check_api_key
-from db.crud_queries import insert_secret, get_secret_by_link, update_viewed_status
+from core.config.config import AppConfig
+from api.utils.checker import Checker
+from api.utils.security import decrypt_secret, check_api_key
+from database.crud import insert_secret, get_secret_by_link, update_viewed_status
 
 
 crud_router = APIRouter()

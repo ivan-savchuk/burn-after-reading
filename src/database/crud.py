@@ -1,8 +1,8 @@
 import sqlite3
 
-from app_logger.logger import Logger
+from core.app_logger.logger import Logger
 
-from db.connect import connect_wal_mode
+from database.connect import connect_wal_mode
 from entities.secret_record import SecretRecord
 
 

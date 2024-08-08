@@ -2,7 +2,7 @@ from datetime import datetime
 
 from fastapi import HTTPException
 
-from config.config import AppConfig
+from core.config.config import AppConfig
 
 from entities.secret_record import SecretRecord
 

@@ -1,5 +1,5 @@
 import os
-from config.config import Config
+from core.config.config import Config
 
 
 class SQLiteConfig(Config):

@@ -1,7 +1,7 @@
 from cryptography.fernet import Fernet, InvalidToken
 
-from app_logger.logger import Logger
-from crypto.helpers import generate_key
+from core.app_logger.logger import Logger
+from core.cryptography.utils import generate_key
 
 
 logger = Logger("fernet")
